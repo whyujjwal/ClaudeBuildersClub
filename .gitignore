@@ -18,3 +18,4 @@ out/
 .vscode/
 *.swp
 .DS_Store
+.vercel
