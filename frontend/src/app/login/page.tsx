@@ -1,5 +1,4 @@
 import { signIn } from "@/auth";
-import Image from "next/image";
 
 export default function LoginPage() {
   return (
@@ -8,12 +7,11 @@ export default function LoginPage() {
         {/* Logo / Branding */}
         <div className="text-center space-y-3">
           <div className="mx-auto flex h-20 w-20 items-center justify-center">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/thinking.jpg"
               alt="Claude Builders Club"
-              width={80}
-              height={80}
-              priority
+              className="h-20 w-20 rounded-xl object-cover"
             />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-brand-text">
