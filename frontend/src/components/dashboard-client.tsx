@@ -27,89 +27,122 @@ export function DashboardClient({ user }: DashboardClientProps) {
   const [editOpen, setEditOpen] = useState(false);
 
   if (!user.onboarding_completed) {
-    return (
-      <OnboardingFlow onComplete={() => router.refresh()} />
-    );
+    return <OnboardingFlow onComplete={() => router.refresh()} />;
   }
 
   const firstName = user.name.split(" ")[0];
-  const trackLabel = user.track === "product" ? "Product Development" : "Research";
-  const trackEmoji = user.track === "product" ? "🛠" : "🔬";
+  const trackLabel = user.track === "product" ? "Product" : "Research";
+  const docLabel = user.track === "product" ? "PRD" : "Research Proposal";
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8 px-4">
-      {/* Greeting */}
-      <div className="space-y-3">
-        <h1 className="text-5xl font-bold tracking-tight text-brand-text">
-          Welcome to Day 1, {firstName} 👋
-        </h1>
-        <p className="text-xl text-brand-text-secondary">
-          Your{" "}
-          <span className="text-brand-terracotta font-semibold">
-            {trackEmoji} {trackLabel}
-          </span>{" "}
-          journey starts now.
-        </p>
-      </div>
+    <div className="min-h-[80vh] space-y-8 px-2">
 
-      {/* Cooking card */}
-      <div className="rounded-2xl border border-brand-border bg-brand-surface px-10 py-10 space-y-5 max-w-sm w-full">
-        <div className="text-7xl animate-bounce">🍳</div>
-        <h2 className="text-2xl font-bold text-brand-text">Cooking…</h2>
-        <p className="text-brand-text-secondary text-sm leading-relaxed">
-          We&apos;re building out the dashboard. Check back soon — something
-          great is on the way.
+      {/* ── Page header ── */}
+      <div className="border-b border-brand-border pb-6 pt-2">
+        <p className="text-[11px] font-semibold uppercase tracking-widest text-brand-text-muted mb-1.5">
+          Dashboard
         </p>
-        <div className="flex items-center justify-center gap-1.5">
-          {[0, 1, 2].map((i) => (
+        <h1 className="text-3xl font-bold tracking-tight text-brand-text">
+          Good to see you, {firstName}.
+        </h1>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-border bg-brand-surface px-3 py-1 text-xs font-medium text-brand-text-secondary">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-terracotta" />
+            {trackLabel} track
+          </span>
+          {user.path && (
+            <span className="rounded-full border border-brand-border bg-brand-surface px-3 py-1 text-xs font-medium text-brand-text-secondary capitalize">
+              {user.path}
+            </span>
+          )}
+          {user.interests.slice(0, 3).map((tag) => (
             <span
-              key={i}
-              className="h-2 w-2 rounded-full bg-brand-terracotta opacity-80 animate-bounce"
-              style={{ animationDelay: `${i * 150}ms` }}
-            />
+              key={tag}
+              className="rounded-full border border-brand-border bg-brand-surface px-3 py-1 text-xs text-brand-text-muted"
+            >
+              {tag}
+            </span>
           ))}
+          <button
+            onClick={() => setEditOpen(true)}
+            className="rounded-full border border-brand-border bg-brand-surface px-3 py-1 text-xs text-brand-text-muted hover:text-brand-text hover:border-brand-terracotta/50 transition-colors"
+          >
+            Edit profile
+          </button>
         </div>
       </div>
 
-      {/* Group project section */}
-      <GroupSection currentUid={user.uid} />
+      {/* ── Main grid ── */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
 
-      {/* PRD snippet if saved */}
-      {user.prd_document && (
-        <div className="w-full max-w-xl rounded-xl border border-brand-border bg-brand-surface p-5 text-left space-y-3">
+        {/* Project / PRD card */}
+        <div className="flex flex-col gap-4 rounded-2xl border border-brand-border bg-brand-surface p-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-brand-terracotta">📄</span>
-              <span className="text-sm font-semibold text-brand-text">
-                Your saved {user.track === "product" ? "PRD" : "Research Proposal"}
-              </span>
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-terracotta/10">
+                <svg
+                  width="15" height="15" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.75"
+                  strokeLinecap="round" strokeLinejoin="round"
+                  className="text-brand-terracotta"
+                >
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <polyline points="10 9 9 9 8 9" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-brand-text">{docLabel}</span>
             </div>
             <button
               onClick={() => setEditOpen(true)}
-              className="text-xs font-medium text-brand-terracotta hover:underline"
+              className="text-xs font-medium text-brand-text-muted hover:text-brand-terracotta transition-colors"
             >
               Edit
             </button>
           </div>
-          <p className="text-xs text-brand-text-muted font-mono whitespace-pre-wrap line-clamp-6 overflow-hidden">
-            {user.prd_document}
+
+          {user.prd_document ? (
+            <p className="flex-1 text-xs leading-relaxed text-brand-text-muted font-mono whitespace-pre-wrap line-clamp-10">
+              {user.prd_document}
+            </p>
+          ) : (
+            <div className="flex flex-1 flex-col items-start justify-center gap-3 py-6">
+              <p className="text-sm text-brand-text-muted leading-relaxed">
+                No document saved yet. Paste your {docLabel} to share it with your group.
+              </p>
+              <button
+                onClick={() => setEditOpen(true)}
+                className="rounded-lg bg-brand-terracotta/10 px-3 py-1.5 text-xs font-semibold text-brand-terracotta hover:bg-brand-terracotta/20 transition-colors"
+              >
+                Add document
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Group card */}
+        <GroupSection currentUid={user.uid} />
+      </div>
+
+      {/* ── Coming soon strip ── */}
+      <div className="rounded-2xl border border-dashed border-brand-border bg-brand-surface/40 px-6 py-5">
+        <div className="flex items-center gap-3">
+          <div className="flex gap-1">
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className="h-1.5 w-1.5 rounded-full bg-brand-terracotta/50 animate-pulse"
+                style={{ animationDelay: `${i * 200}ms` }}
+              />
+            ))}
+          </div>
+          <p className="text-sm text-brand-text-muted">
+            More features on the way — daily check-ins, milestones, and peer reviews.
           </p>
         </div>
-      )}
-
-      {/* Edit button when no PRD */}
-      {!user.prd_document && (
-        <button
-          onClick={() => setEditOpen(true)}
-          className="flex items-center gap-2 rounded-xl border border-brand-border bg-brand-surface px-5 py-3 text-sm font-medium text-brand-text-secondary hover:border-brand-terracotta/50 hover:text-brand-text transition-all"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-          </svg>
-          Edit your track, idea or {user.track === "product" ? "PRD" : "proposal"}
-        </button>
-      )}
+      </div>
 
       {/* Edit modal */}
       {editOpen && user.track && user.path && (
