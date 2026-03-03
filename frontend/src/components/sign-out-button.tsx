@@ -10,7 +10,7 @@ export function SignOutButton() {
     >
       <button
         type="submit"
-        className="rounded-lg bg-claude-surface px-4 py-2 text-sm font-medium text-claude-text-muted border border-claude-border transition-all duration-200 hover:border-claude-orange hover:text-claude-text hover:bg-claude-surface-hover cursor-pointer"
+        className="rounded-lg bg-brand-bg px-4 py-2 text-sm font-medium text-brand-text-secondary border border-brand-border transition-all duration-200 hover:border-brand-terracotta hover:text-brand-text cursor-pointer"
       >
         Sign out
       </button>

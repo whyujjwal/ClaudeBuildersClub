@@ -12,10 +12,10 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       {/* Welcome Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-claude-text">
+        <h1 className="text-3xl font-bold tracking-tight text-brand-text">
           Welcome back, {session.user.name?.split(" ")[0]}
         </h1>
-        <p className="text-claude-text-muted">
+        <p className="text-brand-text-secondary">
           Here&apos;s an overview of your Claude Builders Club activity.
         </p>
       </div>
@@ -30,16 +30,16 @@ export default async function DashboardPage() {
         ].map((stat) => (
           <div
             key={stat.label}
-            className="rounded-xl border border-claude-border bg-claude-surface p-6 transition-all duration-200 hover:border-claude-orange/30 hover:shadow-lg hover:shadow-claude-orange/5"
+            className="rounded-xl border border-brand-border bg-brand-surface p-6 transition-all duration-200 hover:border-brand-terracotta/30 hover:shadow-md"
           >
             <div className="flex items-center justify-between">
-              <p className="text-sm text-claude-text-muted">{stat.label}</p>
+              <p className="text-sm text-brand-text-muted">{stat.label}</p>
               <svg
                 width="20"
                 height="20"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#E8733A"
+                stroke="#D97757"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -47,7 +47,7 @@ export default async function DashboardPage() {
                 <path d={stat.icon} />
               </svg>
             </div>
-            <p className="mt-2 text-3xl font-bold text-claude-text">
+            <p className="mt-2 text-3xl font-bold text-brand-text">
               {stat.value}
             </p>
           </div>
@@ -55,18 +55,18 @@ export default async function DashboardPage() {
       </div>
 
       {/* Recent Activity */}
-      <div className="rounded-xl border border-claude-border bg-claude-surface p-6">
-        <h2 className="text-lg font-semibold text-claude-text">
+      <div className="rounded-xl border border-brand-border bg-brand-surface p-6">
+        <h2 className="text-lg font-semibold text-brand-text">
           Recent Activity
         </h2>
         <div className="mt-6 flex flex-col items-center justify-center py-12 text-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-claude-orange/10">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-terracotta-light">
             <svg
               width="24"
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#E8733A"
+              stroke="#D97757"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -74,10 +74,10 @@ export default async function DashboardPage() {
               <path d="M12 5v14M5 12h14" />
             </svg>
           </div>
-          <h3 className="mt-4 text-claude-text font-medium">
+          <h3 className="mt-4 text-brand-text font-medium">
             No activity yet
           </h3>
-          <p className="mt-1 text-sm text-claude-text-muted">
+          <p className="mt-1 text-sm text-brand-text-muted">
             Start building with Claude to see your activity here.
           </p>
         </div>

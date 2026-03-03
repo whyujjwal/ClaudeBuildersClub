@@ -1,23 +1,33 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-claude-bg: #1a1a2e;
-  --color-claude-bg-deep: #0f0f1a;
-  --color-claude-surface: #252542;
-  --color-claude-surface-hover: #2d2d4a;
-  --color-claude-border: #3a3a5c;
-  --color-claude-orange: #E8733A;
-  --color-claude-orange-light: #F5A623;
-  --color-claude-orange-hover: #d4662f;
-  --color-claude-text: #f0f0f5;
-  --color-claude-text-muted: #a0a0b8;
-  --color-claude-accent: #c4a1ff;
+  /* Anthropic Brand — Warm Cream + Terracotta */
+  --color-brand-bg: #FAF9F0;
+  --color-brand-bg-warm: #F5F0E8;
+  --color-brand-surface: #FFFFFF;
+  --color-brand-surface-hover: #F8F5EE;
+  --color-brand-border: #E8E0D4;
+  --color-brand-border-strong: #D4CCC0;
+  --color-brand-terracotta: #D97757;
+  --color-brand-terracotta-hover: #C4654A;
+  --color-brand-terracotta-light: rgba(217, 119, 87, 0.1);
+  --color-brand-text: #131314;
+  --color-brand-text-secondary: #5A5A5C;
+  --color-brand-text-muted: #8A8A8C;
+  --color-brand-selection: rgba(204, 120, 92, 0.25);
+  --color-brand-slate: #2D2D2E;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+::selection {
+  background: var(--color-brand-selection);
+}
+
 body {
-  background: var(--color-claude-bg-deep);
-  color: var(--color-claude-text);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background: var(--color-brand-bg);
+  color: var(--color-brand-text);
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

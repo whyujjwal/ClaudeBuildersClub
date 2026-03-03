@@ -2,11 +2,11 @@ import { signIn } from "@/auth";
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-claude-bg-deep">
-      <div className="w-full max-w-md space-y-8 rounded-2xl bg-claude-surface p-10 shadow-2xl border border-claude-border">
-        {/* Claude Logo / Branding */}
+    <div className="flex min-h-screen items-center justify-center bg-brand-bg">
+      <div className="w-full max-w-md space-y-8 rounded-2xl bg-brand-surface p-10 shadow-[0_2px_40px_-8px_rgba(0,0,0,0.08)] border border-brand-border">
+        {/* Logo / Branding */}
         <div className="text-center space-y-3">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-claude-orange/10">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-terracotta-light">
             <svg
               width="32"
               height="32"
@@ -16,37 +16,37 @@ export default function LoginPage() {
             >
               <path
                 d="M12 2L2 7L12 12L22 7L12 2Z"
-                stroke="#E8733A"
+                stroke="#D97757"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
                 d="M2 17L12 22L22 17"
-                stroke="#E8733A"
+                stroke="#D97757"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
                 d="M2 12L12 17L22 12"
-                stroke="#E8733A"
+                stroke="#D97757"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-claude-text">
+          <h1 className="text-3xl font-bold tracking-tight text-brand-text">
             Claude Builders Club
           </h1>
-          <p className="text-claude-text-muted text-sm">
+          <p className="text-brand-text-muted text-sm">
             Sign in to access your dashboard
           </p>
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-claude-border" />
+        <div className="h-px bg-brand-border" />
 
         {/* Google Sign-In */}
         <form
@@ -57,7 +57,7 @@ export default function LoginPage() {
         >
           <button
             type="submit"
-            className="group flex w-full items-center justify-center gap-3 rounded-xl bg-claude-bg-deep px-5 py-4 text-claude-text font-medium border border-claude-border transition-all duration-200 hover:border-claude-orange hover:bg-claude-surface-hover hover:shadow-lg hover:shadow-claude-orange/5 cursor-pointer"
+            className="group flex w-full items-center justify-center gap-3 rounded-xl bg-brand-surface px-5 py-4 text-brand-text font-medium border border-brand-border transition-all duration-200 hover:border-brand-terracotta hover:shadow-md cursor-pointer"
           >
             <svg width="20" height="20" viewBox="0 0 24 24">
               <path
@@ -82,7 +82,7 @@ export default function LoginPage() {
         </form>
 
         {/* Footer */}
-        <p className="text-center text-xs text-claude-text-muted">
+        <p className="text-center text-xs text-brand-text-muted">
           By signing in, you agree to our Terms of Service
         </p>
       </div>
