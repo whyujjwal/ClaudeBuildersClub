@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   title: "Claude Builders Club",
   description: "Dashboard for Claude Builders Club",
   icons: {
-    icon: "/thinking.svg",
-    shortcut: "/thinking.svg",
+    icon: "/thinking.jpg",
+    shortcut: "/thinking.jpg",
   },
 };
 

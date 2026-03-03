@@ -9,7 +9,7 @@ export default function LoginPage() {
         <div className="text-center space-y-3">
           <div className="mx-auto flex h-20 w-20 items-center justify-center">
             <Image
-              src="/thinking.svg"
+              src="/thinking.jpg"
               alt="Claude Builders Club"
               width={80}
               height={80}
