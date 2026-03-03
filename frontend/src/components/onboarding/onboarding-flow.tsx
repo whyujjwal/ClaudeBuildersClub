@@ -52,14 +52,6 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     }
   };
 
-  const STEP_ORDER: Step[] = [
-    "welcome",
-    "track",
-    "path",
-    "project-prompt", // or "interests"
-    "complete",
-  ];
-
   const progressStep =
     step === "welcome"
       ? 0

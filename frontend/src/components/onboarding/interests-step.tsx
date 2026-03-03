@@ -59,7 +59,7 @@ export function InterestsStep({
           What are your skills &amp; interests?
         </h2>
         <p className="text-brand-text-secondary">
-          Select everything that applies — we'll use this to suggest the right
+          Select everything that applies — we&apos;ll use this to suggest the right
           teams for you.
         </p>
       </div>

@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { SignOutButton } from "@/components/sign-out-button";
+import Image from "next/image";
 
 export default async function DashboardLayout({
   children,
@@ -51,9 +52,11 @@ export default async function DashboardLayout({
           </div>
           <div className="flex items-center gap-4">
             {session?.user?.image && (
-              <img
+              <Image
                 src={session.user.image}
                 alt={session.user.name || "User"}
+                width={32}
+                height={32}
                 className="h-8 w-8 rounded-full ring-2 ring-brand-border"
               />
             )}
