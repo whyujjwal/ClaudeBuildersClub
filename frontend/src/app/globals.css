@@ -20,6 +20,44 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark theme via system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-brand-bg: #0f0f1a;
+    --color-brand-bg-warm: #13131f;
+    --color-brand-surface: #1a1a2e;
+    --color-brand-surface-hover: #1f1f35;
+    --color-brand-border: #2a2a3e;
+    --color-brand-border-strong: #3a3a50;
+    --color-brand-terracotta: #D97757;
+    --color-brand-terracotta-hover: #e8886a;
+    --color-brand-terracotta-light: rgba(217, 119, 87, 0.15);
+    --color-brand-text: #f0ede8;
+    --color-brand-text-secondary: #a8a4a0;
+    --color-brand-text-muted: #6a6a7a;
+    --color-brand-selection: rgba(217, 119, 87, 0.25);
+    --color-brand-slate: #c8c4c0;
+  }
+}
+
+/* Dark theme via manual toggle class */
+.dark {
+  --color-brand-bg: #0f0f1a;
+  --color-brand-bg-warm: #13131f;
+  --color-brand-surface: #1a1a2e;
+  --color-brand-surface-hover: #1f1f35;
+  --color-brand-border: #2a2a3e;
+  --color-brand-border-strong: #3a3a50;
+  --color-brand-terracotta: #D97757;
+  --color-brand-terracotta-hover: #e8886a;
+  --color-brand-terracotta-light: rgba(217, 119, 87, 0.15);
+  --color-brand-text: #f0ede8;
+  --color-brand-text-secondary: #a8a4a0;
+  --color-brand-text-muted: #6a6a7a;
+  --color-brand-selection: rgba(217, 119, 87, 0.25);
+  --color-brand-slate: #c8c4c0;
+}
+
 ::selection {
   background: var(--color-brand-selection);
 }
@@ -30,4 +68,5 @@ body {
   font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background 0.2s ease, color 0.2s ease;
 }
