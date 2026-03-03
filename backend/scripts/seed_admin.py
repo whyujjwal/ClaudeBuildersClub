@@ -6,36 +6,36 @@ Usage:
 
 Run from the /backend directory.
 """
-import asyncio
 import sys
 
 import firebase_admin
-from google.cloud.firestore_v1 import AsyncClient
+from google.cloud import firestore
 
 firebase_admin.initialize_app()
 
 
-async def promote_to_admin(email: str) -> None:
+def promote_to_admin(email: str) -> None:
     from app.config import settings
 
-    db = AsyncClient(project=settings.gcp_project_id)
+    db = firestore.Client(project=settings.gcp_project_id)
     collection = db.collection("users")
 
-    docs = collection.where("email", "==", email).limit(1).stream()
-    found = False
-    async for doc in docs:
-        found = True
-        await doc.reference.update({"role": "admin"})
-        data = doc.to_dict()
-        print(f"Promoted user to admin:")
-        print(f"  UID:   {data.get('uid')}")
-        print(f"  Email: {data.get('email')}")
-        print(f"  Name:  {data.get('name')}")
+    docs = list(
+        collection.where(filter=firestore.FieldFilter("email", "==", email)).limit(1).stream()
+    )
 
-    if not found:
+    if not docs:
         print(f"No user found with email: {email}")
         print("The user must sign in at least once before being promoted.")
         sys.exit(1)
+
+    doc = docs[0]
+    doc.reference.update({"role": "admin"})
+    data = doc.to_dict()
+    print("Promoted user to admin:")
+    print(f"  UID:   {data.get('uid')}")
+    print(f"  Email: {data.get('email')}")
+    print(f"  Name:  {data.get('name')}")
 
 
 if __name__ == "__main__":
@@ -43,4 +43,4 @@ if __name__ == "__main__":
         print("Usage: python -m scripts.seed_admin <email>")
         sys.exit(1)
 
-    asyncio.run(promote_to_admin(sys.argv[1]))
+    promote_to_admin(sys.argv[1])

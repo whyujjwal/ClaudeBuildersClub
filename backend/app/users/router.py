@@ -76,6 +76,7 @@ async def get_all_users(
     )
 
 
+
 @router.patch("/{uid}/role", response_model=UserResponse)
 async def change_user_role(
     uid: str,
