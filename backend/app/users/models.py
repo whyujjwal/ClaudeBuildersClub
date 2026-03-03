@@ -45,6 +45,8 @@ class UserResponse(BaseModel):
     name: str
     picture: str
     role: Role = Role.USER
+    created_at: datetime | None = None
+    last_login: datetime | None = None
     onboarding_completed: bool = False
     track: str | None = None
     path: str | None = None

@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.auth.router import router as auth_router
 from app.users.router import router as users_router
+from app.groups.router import router as groups_router
 from app.db.firebase import init_firebase, get_firestore_client
 
 
@@ -35,6 +36,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(users_router)
+app.include_router(groups_router)
 
 
 @app.get("/health")

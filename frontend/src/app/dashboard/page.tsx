@@ -22,6 +22,7 @@ export default async function DashboardPage() {
   }
 
   return (
+    <div className="mx-auto max-w-7xl p-6">
     <DashboardClient
       user={
         userData ?? {
@@ -37,6 +38,7 @@ export default async function DashboardPage() {
         }
       }
     />
+    </div>
   );
 }
 

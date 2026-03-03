@@ -95,7 +95,7 @@ export default async function DashboardLayout({
       </nav>
 
       {/* Main Content */}
-      <main className="mx-auto max-w-7xl p-6">{children}</main>
+      <main>{children}</main>
     </div>
   );
 }
