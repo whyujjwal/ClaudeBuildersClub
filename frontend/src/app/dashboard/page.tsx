@@ -33,6 +33,7 @@ export default async function DashboardPage() {
           track: null,
           path: null,
           interests: [],
+          prd_document: null,
         }
       }
     />

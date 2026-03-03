@@ -2,6 +2,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from app.auth.google import verify_google_token
+from app.users.models import UserProfile, Role, ROLE_HIERARCHY
+from app.users.service import get_or_create_user
 
 security = HTTPBearer()
 
@@ -23,3 +25,24 @@ async def get_current_user(
         "name": payload.get("name", ""),
         "picture": payload.get("picture", ""),
     }
+
+
+async def get_current_user_profile(
+    current_user: dict = Depends(get_current_user),
+) -> UserProfile:
+    """Get the full UserProfile including role from Firestore."""
+    return await get_or_create_user(current_user)
+
+
+def require_role(minimum_role: Role):
+    """Dependency factory enforcing a minimum role level."""
+    async def role_checker(
+        profile: UserProfile = Depends(get_current_user_profile),
+    ) -> UserProfile:
+        if ROLE_HIERARCHY[profile.role] < ROLE_HIERARCHY[minimum_role]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Requires role: {minimum_role.value} or higher",
+            )
+        return profile
+    return role_checker

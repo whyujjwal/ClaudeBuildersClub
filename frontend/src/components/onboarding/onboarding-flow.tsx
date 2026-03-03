@@ -5,6 +5,7 @@ import { WelcomeStep } from "./welcome-step";
 import { TrackStep } from "./track-step";
 import { PathStep } from "./path-step";
 import { ProjectPromptStep } from "./project-prompt-step";
+import { PrdSubmitStep } from "./prd-submit-step";
 import { InterestsStep } from "./interests-step";
 import { CompleteStep } from "./complete-step";
 
@@ -13,6 +14,7 @@ type Step =
   | "track"
   | "path"
   | "project-prompt"
+  | "prd-submit"
   | "interests"
   | "complete";
 
@@ -26,11 +28,15 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const [track, setTrack] = useState<"product" | "research" | null>(null);
   const [path, setPath] = useState<"solo" | "team" | null>(null);
   const [interests, setInterests] = useState<string[]>([]);
+  const [prdDocument, setPrdDocument] = useState<string>("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   /** Persist onboarding data to backend then show complete step */
-  const saveOnboarding = async (finalInterests: string[] = interests) => {
+  const saveOnboarding = async (
+    finalInterests: string[] = interests,
+    finalPrd: string = prdDocument,
+  ) => {
     if (!track || !path) return;
     setSaving(true);
     setError(null);
@@ -38,7 +44,12 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
       const res = await fetch("/api/onboarding", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ track, path, interests: finalInterests }),
+        body: JSON.stringify({
+          track,
+          path,
+          interests: finalInterests,
+          prd_document: finalPrd || null,
+        }),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
@@ -61,9 +72,11 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
       ? 2
       : step === "project-prompt" || step === "interests"
       ? 3
-      : 4;
+      : step === "prd-submit"
+      ? 4
+      : 5;
 
-  const totalSteps = 4;
+  const totalSteps = 5;
 
   return (
     <div className="flex flex-col items-center py-8 px-4">
@@ -108,8 +121,21 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         {step === "project-prompt" && track && (
           <ProjectPromptStep
             track={track}
-            onComplete={() => saveOnboarding([])}
+            onComplete={() => setStep("prd-submit")}
             onBack={() => setStep("path")}
+          />
+        )}
+
+        {step === "prd-submit" && track && (
+          <PrdSubmitStep
+            track={track}
+            loading={saving}
+            onComplete={(doc) => {
+              setPrdDocument(doc);
+              saveOnboarding([], doc);
+            }}
+            onSkip={() => saveOnboarding([], "")}
+            onBack={() => setStep("project-prompt")}
           />
         )}
 

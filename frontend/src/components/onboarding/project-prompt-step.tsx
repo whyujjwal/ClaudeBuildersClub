@@ -150,7 +150,7 @@ export function ProjectPromptStep({
         onClick={onComplete}
         className="w-full rounded-xl bg-brand-terracotta px-6 py-3.5 text-base font-semibold text-white transition-all duration-150 hover:bg-brand-terracotta-hover active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-brand-terracotta/50"
       >
-        I&apos;ve pasted this in Claude →
+        I&apos;ve got my {track === "product" ? "PRD" : "Research Proposal"} →
       </button>
 
       <button

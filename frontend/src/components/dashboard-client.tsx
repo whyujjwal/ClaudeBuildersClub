@@ -12,143 +12,75 @@ interface UserData {
   track: "product" | "research" | null;
   path: "solo" | "team" | null;
   interests: string[];
+  prd_document: string | null;
 }
 
 interface DashboardClientProps {
   user: UserData;
 }
 
-const TRACK_LABEL: Record<string, string> = {
-  product: "Product Development",
-  research: "Research",
-};
-
-const PATH_LABEL: Record<string, string> = {
-  solo: "Solo project",
-  team: "Joined a team",
-};
-
 export function DashboardClient({ user }: DashboardClientProps) {
   const router = useRouter();
 
   if (!user.onboarding_completed) {
     return (
-      <OnboardingFlow
-        onComplete={() => router.refresh()}
-      />
+      <OnboardingFlow onComplete={() => router.refresh()} />
     );
   }
 
+  const firstName = user.name.split(" ")[0];
+  const trackLabel = user.track === "product" ? "Product Development" : "Research";
+  const trackEmoji = user.track === "product" ? "🛠" : "🔬";
+
   return (
-    <div className="space-y-8">
-      {/* Welcome Header */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight text-brand-text">
-          Welcome back, {user.name.split(" ")[0]}
+    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8 px-4">
+      {/* Greeting */}
+      <div className="space-y-3">
+        <h1 className="text-5xl font-bold tracking-tight text-brand-text">
+          Welcome to Day 1, {firstName} 👋
         </h1>
-        <p className="text-brand-text-secondary">
-          Here&apos;s an overview of your Claude Builders Club activity.
+        <p className="text-xl text-brand-text-secondary">
+          Your{" "}
+          <span className="text-brand-terracotta font-semibold">
+            {trackEmoji} {trackLabel}
+          </span>{" "}
+          journey starts now.
         </p>
       </div>
 
-      {/* Profile summary */}
-      <div className="flex flex-wrap gap-3">
-        {user.track && (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-terracotta-light px-3 py-1 text-sm font-medium text-brand-terracotta">
-            {user.track === "product" ? "🛠" : "🔬"} {TRACK_LABEL[user.track]}
-          </span>
-        )}
-        {user.path && (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-terracotta-light px-3 py-1 text-sm font-medium text-brand-terracotta">
-            {user.path === "solo" ? "💡" : "🤝"} {PATH_LABEL[user.path]}
-          </span>
-        )}
-        {user.interests.map((i) => (
-          <span
-            key={i}
-            className="inline-flex items-center rounded-full border border-brand-border bg-brand-surface px-3 py-1 text-sm text-brand-text-secondary"
-          >
-            {i}
-          </span>
-        ))}
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          {
-            label: "Projects",
-            value: "0",
-            icon: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z",
-          },
-          {
-            label: "API Calls",
-            value: "0",
-            icon: "M13 10V3L4 14h7v7l9-11h-7z",
-          },
-          {
-            label: "Members",
-            value: "1",
-            icon: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75",
-          },
-          {
-            label: "Uptime",
-            value: "100%",
-            icon: "M22 12h-4l-3 9L9 3l-3 9H2",
-          },
-        ].map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-xl border border-brand-border bg-brand-surface p-6 transition-all duration-200 hover:border-brand-terracotta/30 hover:shadow-md"
-          >
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-brand-text-muted">{stat.label}</p>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#D97757"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d={stat.icon} />
-              </svg>
-            </div>
-            <p className="mt-2 text-3xl font-bold text-brand-text">
-              {stat.value}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Recent Activity */}
-      <div className="rounded-xl border border-brand-border bg-brand-surface p-6">
-        <h2 className="text-lg font-semibold text-brand-text">
-          Recent Activity
-        </h2>
-        <div className="mt-6 flex flex-col items-center justify-center py-12 text-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-terracotta-light">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#D97757"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 5v14M5 12h14" />
-            </svg>
-          </div>
-          <h3 className="mt-4 text-brand-text font-medium">No activity yet</h3>
-          <p className="mt-1 text-sm text-brand-text-muted">
-            Start building with Claude to see your activity here.
-          </p>
+      {/* Cooking card */}
+      <div className="rounded-2xl border border-brand-border bg-brand-surface px-10 py-10 space-y-5 max-w-sm w-full">
+        <div className="text-7xl animate-bounce">🍳</div>
+        <h2 className="text-2xl font-bold text-brand-text">Cooking…</h2>
+        <p className="text-brand-text-secondary text-sm leading-relaxed">
+          We&apos;re building out the dashboard. Check back soon — something
+          great is on the way.
+        </p>
+        <div className="flex items-center justify-center gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              className="h-2 w-2 rounded-full bg-brand-terracotta opacity-80 animate-bounce"
+              style={{ animationDelay: `${i * 150}ms` }}
+            />
+          ))}
         </div>
       </div>
+
+      {/* PRD snippet if saved */}
+      {user.prd_document && (
+        <div className="w-full max-w-xl rounded-xl border border-brand-border bg-brand-surface p-5 text-left space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-brand-terracotta">📄</span>
+            <span className="text-sm font-semibold text-brand-text">
+              Your saved {user.track === "product" ? "PRD" : "Research Proposal"}
+            </span>
+          </div>
+          <p className="text-xs text-brand-text-muted font-mono whitespace-pre-wrap line-clamp-6 overflow-hidden">
+            {user.prd_document}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
