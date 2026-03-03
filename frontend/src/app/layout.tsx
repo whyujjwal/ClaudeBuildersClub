@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Claude Builders Club",
   description: "Dashboard for Claude Builders Club",
+  icons: {
+    icon: "/thinking.svg",
+    shortcut: "/thinking.svg",
+  },
 };
 
 export default function RootLayout({

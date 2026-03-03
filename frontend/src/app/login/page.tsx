@@ -1,4 +1,5 @@
 import { signIn } from "@/auth";
+import Image from "next/image";
 
 export default function LoginPage() {
   return (
@@ -6,36 +7,14 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-8 rounded-2xl bg-brand-surface p-10 shadow-[0_2px_40px_-8px_rgba(0,0,0,0.08)] border border-brand-border">
         {/* Logo / Branding */}
         <div className="text-center space-y-3">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-terracotta-light">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12 2L2 7L12 12L22 7L12 2Z"
-                stroke="#D97757"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M2 17L12 22L22 17"
-                stroke="#D97757"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M2 12L12 17L22 12"
-                stroke="#D97757"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <div className="mx-auto flex h-20 w-20 items-center justify-center">
+            <Image
+              src="/thinking.svg"
+              alt="Claude Builders Club"
+              width={80}
+              height={80}
+              priority
+            />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-brand-text">
             Claude Builders Club
