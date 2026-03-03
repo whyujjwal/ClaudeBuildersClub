@@ -48,6 +48,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session
     },
   },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days — persists across browser closes
+  },
   pages: {
     signIn: "/login",
   },

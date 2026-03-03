@@ -77,7 +77,7 @@ export default function LoginPage() {
                 fill="#EA4335"
               />
             </svg>
-            <span>Continue with Google</span>
+            <span>Sign in with BITS email</span>
           </button>
         </form>
 
