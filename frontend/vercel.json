@@ -1,4 +1,4 @@
 {
   "framework": "nextjs",
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- frontend/"
+  "ignoreCommand": "[ -n \"$VERCEL_GIT_PREVIOUS_SHA\" ] && git diff --quiet $VERCEL_GIT_PREVIOUS_SHA $VERCEL_GIT_COMMIT_SHA -- frontend/"
 }
