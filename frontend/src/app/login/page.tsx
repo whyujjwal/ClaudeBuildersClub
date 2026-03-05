@@ -1,6 +1,13 @@
 import { signIn } from "@/auth";
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+  const domainError = error === "invalid_domain";
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-brand-bg">
       <div className="w-full max-w-md space-y-8 rounded-2xl bg-brand-surface p-10 shadow-[0_2px_40px_-8px_rgba(0,0,0,0.08)] border border-brand-border">
@@ -18,9 +25,15 @@ export default function LoginPage() {
             Claude Builders Club
           </h1>
           <p className="text-brand-text-muted text-sm">
-            Sign in to access your dashboard
+            Sign in with your BITS Pilani email
           </p>
         </div>
+
+        {domainError && (
+          <div className="rounded-lg border border-red-300/50 bg-red-50 px-4 py-3 text-sm text-red-700">
+            Only <span className="font-semibold">@pilani.bits-pilani.ac.in</span> emails are allowed. Please sign in with your BITS Pilani email.
+          </div>
+        )}
 
         {/* Divider */}
         <div className="h-px bg-brand-border" />
@@ -60,7 +73,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-xs text-brand-text-muted">
-          By signing in, you agree to our Terms of Service
+          Only @pilani.bits-pilani.ac.in accounts are accepted
         </p>
       </div>
     </div>

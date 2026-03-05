@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MarkdownPreview } from "@/components/markdown-preview";
 
 const SKILL_TAGS = [
   "Frontend", "Backend", "Full-Stack", "AI/ML", "NLP", "Computer Vision",
@@ -29,6 +30,7 @@ export function EditProfileModal({
   const [path, setPath] = useState<"solo" | "team">(initialPath);
   const [selected, setSelected] = useState<Set<string>>(new Set(initialInterests));
   const [prd, setPrd] = useState(initialPrd ?? "");
+  const [prdTab, setPrdTab] = useState<"write" | "preview">("write");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -154,17 +156,49 @@ export function EditProfileModal({
 
           {/* PRD / Research doc */}
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-brand-text">
-              {prdLabel}{" "}
-              <span className="text-brand-text-muted font-normal">(optional)</span>
-            </label>
-            <textarea
-              value={prd}
-              onChange={(e) => setPrd(e.target.value)}
-              placeholder={`Paste your ${prdLabel} here…`}
-              rows={8}
-              className="w-full rounded-xl border border-brand-border bg-brand-surface px-4 py-3 text-sm text-brand-text placeholder:text-brand-text-muted font-mono focus:outline-none focus:ring-2 focus:ring-brand-terracotta/50 focus:border-brand-terracotta/50 resize-none transition-all"
-            />
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-semibold text-brand-text">
+                {prdLabel}{" "}
+                <span className="text-brand-text-muted font-normal">(optional, Markdown supported)</span>
+              </label>
+              <div className="flex rounded-lg border border-brand-border overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setPrdTab("write")}
+                  className={`px-3 py-1 text-xs font-medium transition-colors ${
+                    prdTab === "write"
+                      ? "bg-brand-surface text-brand-text"
+                      : "bg-brand-bg-warm text-brand-text-muted hover:text-brand-text"
+                  }`}
+                >
+                  Write
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPrdTab("preview")}
+                  className={`px-3 py-1 text-xs font-medium transition-colors ${
+                    prdTab === "preview"
+                      ? "bg-brand-surface text-brand-text"
+                      : "bg-brand-bg-warm text-brand-text-muted hover:text-brand-text"
+                  }`}
+                >
+                  Preview
+                </button>
+              </div>
+            </div>
+            {prdTab === "write" ? (
+              <textarea
+                value={prd}
+                onChange={(e) => setPrd(e.target.value)}
+                placeholder={`Paste your ${prdLabel} here (Markdown supported)…`}
+                rows={8}
+                className="w-full rounded-xl border border-brand-border bg-brand-surface px-4 py-3 text-sm text-brand-text placeholder:text-brand-text-muted font-mono focus:outline-none focus:ring-2 focus:ring-brand-terracotta/50 focus:border-brand-terracotta/50 resize-none transition-all"
+              />
+            ) : (
+              <div className="min-h-[12rem] rounded-xl border border-brand-border bg-brand-surface px-4 py-3 overflow-y-auto">
+                <MarkdownPreview content={prd} />
+              </div>
+            )}
           </div>
 
           {error && (

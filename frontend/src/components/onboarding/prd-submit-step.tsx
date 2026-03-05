@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MarkdownPreview } from "@/components/markdown-preview";
 
 interface PrdSubmitStepProps {
   track: "product" | "research";
@@ -18,12 +19,13 @@ export function PrdSubmitStep({
   loading = false,
 }: PrdSubmitStepProps) {
   const [doc, setDoc] = useState("");
+  const [tab, setTab] = useState<"write" | "preview">("write");
 
   const label = track === "product" ? "PRD" : "Research Proposal";
   const placeholder =
     track === "product"
-      ? "Paste your completed PRD here — Executive Summary, Problem Statement, Features, Tech Architecture…"
-      : "Paste your completed Research Proposal here — Abstract, Methodology, Data Requirements, Expected Outcomes…";
+      ? "Paste your completed PRD here (Markdown supported) — Executive Summary, Problem Statement, Features, Tech Architecture…"
+      : "Paste your completed Research Proposal here (Markdown supported) — Abstract, Methodology, Data Requirements, Expected Outcomes…";
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
@@ -36,24 +38,56 @@ export function PrdSubmitStep({
         </h2>
         <p className="text-brand-text-secondary">
           Copy the {label} Claude generated for you and paste it below — we
-          &apos;ll store it so you can always come back to it.
+          &apos;ll store it so you can always come back to it. Markdown is supported.
         </p>
       </div>
 
       <div className="rounded-2xl border border-brand-border bg-brand-surface overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-brand-border bg-brand-bg-warm">
-          <div className="h-2 w-2 rounded-full bg-brand-terracotta" />
-          <span className="text-xs font-medium text-brand-text-muted">
-            Your {label}
-          </span>
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-brand-border bg-brand-bg-warm">
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-brand-terracotta" />
+            <span className="text-xs font-medium text-brand-text-muted">
+              Your {label}
+            </span>
+          </div>
+          <div className="flex rounded-lg border border-brand-border overflow-hidden">
+            <button
+              type="button"
+              onClick={() => setTab("write")}
+              className={`px-3 py-1 text-xs font-medium transition-colors ${
+                tab === "write"
+                  ? "bg-brand-surface text-brand-text"
+                  : "bg-brand-bg-warm text-brand-text-muted hover:text-brand-text"
+              }`}
+            >
+              Write
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("preview")}
+              className={`px-3 py-1 text-xs font-medium transition-colors ${
+                tab === "preview"
+                  ? "bg-brand-surface text-brand-text"
+                  : "bg-brand-bg-warm text-brand-text-muted hover:text-brand-text"
+              }`}
+            >
+              Preview
+            </button>
+          </div>
         </div>
-        <textarea
-          value={doc}
-          onChange={(e) => setDoc(e.target.value)}
-          placeholder={placeholder}
-          rows={14}
-          className="w-full bg-transparent px-5 py-4 text-sm text-brand-text placeholder:text-brand-text-muted focus:outline-none resize-none font-mono leading-relaxed"
-        />
+        {tab === "write" ? (
+          <textarea
+            value={doc}
+            onChange={(e) => setDoc(e.target.value)}
+            placeholder={placeholder}
+            rows={14}
+            className="w-full bg-transparent px-5 py-4 text-sm text-brand-text placeholder:text-brand-text-muted focus:outline-none resize-none font-mono leading-relaxed"
+          />
+        ) : (
+          <div className="px-5 py-4 min-h-[21rem] overflow-y-auto">
+            <MarkdownPreview content={doc} />
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-3">

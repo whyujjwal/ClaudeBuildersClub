@@ -16,8 +16,16 @@ export async function backendFetch(
     headers.set("Authorization", `Bearer ${session.idToken}`);
   }
 
-  return fetch(`${BACKEND_URL}${path}`, {
-    ...options,
-    headers,
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+
+  try {
+    return await fetch(`${BACKEND_URL}${path}`, {
+      ...options,
+      headers,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
 }

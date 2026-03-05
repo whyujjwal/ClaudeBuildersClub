@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { OnboardingFlow } from "@/components/onboarding/onboarding-flow";
 import { EditProfileModal } from "@/components/edit-profile-modal";
 import { GroupSection } from "@/components/group-section";
+import { MarkdownPreview } from "@/components/markdown-preview";
 
 interface UserData {
   uid: string;
@@ -104,9 +105,9 @@ export function DashboardClient({ user }: DashboardClientProps) {
           </div>
 
           {user.prd_document ? (
-            <p className="flex-1 text-xs leading-relaxed text-brand-text-muted font-mono whitespace-pre-wrap line-clamp-10">
-              {user.prd_document}
-            </p>
+            <div className="flex-1 overflow-hidden max-h-60 overflow-y-auto">
+              <MarkdownPreview content={user.prd_document} />
+            </div>
           ) : (
             <div className="flex flex-1 flex-col items-start justify-center gap-3 py-6">
               <p className="text-sm text-brand-text-muted leading-relaxed">
@@ -125,6 +126,41 @@ export function DashboardClient({ user }: DashboardClientProps) {
         {/* Group card */}
         <GroupSection currentUid={user.uid} />
       </div>
+
+      {/* ── AI Credits form (visible only after PRD/Research submission) ── */}
+      {user.prd_document && (
+        <div className="rounded-2xl border border-brand-border bg-brand-surface p-6">
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-terracotta/10">
+              <svg
+                width="15" height="15" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="1.75"
+                strokeLinecap="round" strokeLinejoin="round"
+                className="text-brand-terracotta"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
+            </div>
+            <div>
+              <span className="text-sm font-semibold text-brand-text">Claim your AI Credits</span>
+              <p className="text-xs text-brand-text-muted mt-0.5">
+                Fill out the form below to receive your AI credits for building.
+              </p>
+            </div>
+          </div>
+          <div className="w-full overflow-hidden rounded-xl border border-brand-border">
+            <iframe
+              src="https://www.jotform.com/253566966596075"
+              className="w-full border-0"
+              style={{ height: 600 }}
+              allow="geolocation; microphone; camera; fullscreen"
+              title="AI Credits Application"
+            />
+          </div>
+        </div>
+      )}
 
       {/* ── Coming soon strip ── */}
       <div className="rounded-2xl border border-dashed border-brand-border bg-brand-surface/40 px-6 py-5">
