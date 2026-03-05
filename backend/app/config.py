@@ -11,7 +11,7 @@ class Settings(BaseSettings):
 
     # Database backend: "postgres" for local dev, "firestore" for deployed
     db_backend: str = "postgres"
-    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/builders_club"
+    database_url: str = "postgresql+asyncpg://localhost:5432/builders_club"
 
     class Config:
         env_file = ".env"

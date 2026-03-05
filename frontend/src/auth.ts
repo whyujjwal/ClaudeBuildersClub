@@ -19,7 +19,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async signIn({ profile }) {
       const email = profile?.email ?? ""
-      if (!email.endsWith("@pilani.bits-pilani.ac.in")) {
+      const ALLOWED_EMAILS = ["whyujjwalraj@gmail.com"]
+      if (!email.endsWith("@pilani.bits-pilani.ac.in") && !ALLOWED_EMAILS.includes(email)) {
         return "/login?error=invalid_domain"
       }
       return true
