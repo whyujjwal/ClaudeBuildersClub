@@ -127,8 +127,8 @@ export function DashboardClient({ user }: DashboardClientProps) {
         <GroupSection currentUid={user.uid} />
       </div>
 
-      {/* ── AI Credits form (visible only after PRD/Research submission) ── */}
-      {user.prd_document && (
+      {/* ── AI Credits form (visible after PRD/Research submission, or for team-path users) ── */}
+      {(user.prd_document || user.path === "team") && (
         <div className="rounded-2xl border border-brand-border bg-brand-surface p-6">
           <div className="flex items-center gap-2.5 mb-4">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-terracotta/10">
