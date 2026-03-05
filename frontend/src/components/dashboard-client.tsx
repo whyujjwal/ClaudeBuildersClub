@@ -17,6 +17,7 @@ interface UserData {
   path: "solo" | "team" | null;
   interests: string[];
   prd_document: string | null;
+  credits_form_submitted: boolean;
 }
 
 interface DashboardClientProps {
@@ -26,6 +27,7 @@ interface DashboardClientProps {
 export function DashboardClient({ user }: DashboardClientProps) {
   const router = useRouter();
   const [editOpen, setEditOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   if (!user.onboarding_completed) {
     return <OnboardingFlow onComplete={() => router.refresh()} />;
@@ -144,9 +146,13 @@ export function DashboardClient({ user }: DashboardClientProps) {
               </svg>
             </div>
             <div>
-              <span className="text-sm font-semibold text-brand-text">Claim your AI Credits</span>
+              <span className="text-sm font-semibold text-brand-text">
+                {user.credits_form_submitted ? "AI Credits — Submitted" : "Claim your AI Credits"}
+              </span>
               <p className="text-xs text-brand-text-muted mt-0.5">
-                Fill out the form below to receive your AI credits for building.
+                {user.credits_form_submitted
+                  ? "Your application has been submitted. Credits will be assigned shortly."
+                  : "Fill out the form below to receive your AI credits for building."}
               </p>
             </div>
           </div>
@@ -170,15 +176,44 @@ export function DashboardClient({ user }: DashboardClientProps) {
             </div>
           </div>
 
-          <div className="w-full overflow-hidden rounded-xl border border-brand-border">
-            <iframe
-              src="https://www.jotform.com/253566966596075"
-              className="w-full border-0"
-              style={{ height: 600 }}
-              allow="geolocation; microphone; camera; fullscreen"
-              title="AI Credits Application"
-            />
-          </div>
+          {user.credits_form_submitted ? (
+            <div className="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-600 shrink-0">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+              <span className="text-sm font-medium text-green-700">Form submitted successfully</span>
+            </div>
+          ) : (
+            <>
+              <div className="w-full overflow-hidden rounded-xl border border-brand-border">
+                <iframe
+                  src="https://www.jotform.com/253566966596075"
+                  className="w-full border-0"
+                  style={{ height: 600 }}
+                  allow="geolocation; microphone; camera; fullscreen"
+                  title="AI Credits Application"
+                />
+              </div>
+              <div className="mt-4 flex justify-end">
+                <button
+                  disabled={submitting}
+                  onClick={async () => {
+                    setSubmitting(true);
+                    try {
+                      const res = await fetch("/api/credits-submitted", { method: "POST" });
+                      if (res.ok) router.refresh();
+                    } finally {
+                      setSubmitting(false);
+                    }
+                  }}
+                  className="rounded-xl bg-brand-terracotta px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-terracotta-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {submitting ? "Submitting..." : "I have submitted the form"}
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
 

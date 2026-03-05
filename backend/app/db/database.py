@@ -32,6 +32,7 @@ class UserRow(Base):
     path = Column(String, nullable=True)
     interests = Column(ARRAY(String), default=list)
     prd_document = Column(Text, nullable=True)
+    credits_form_submitted = Column(Boolean, default=False)
 
     memberships = relationship("GroupMemberRow", back_populates="user")
     managed_groups = relationship("GroupRow", back_populates="pm")

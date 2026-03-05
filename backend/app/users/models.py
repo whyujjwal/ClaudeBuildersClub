@@ -30,6 +30,7 @@ class UserProfile(BaseModel):
     path: str | None = None           # "solo" or "team"
     interests: list[str] = []
     prd_document: str | None = None   # completed PRD or research proposal
+    credits_form_submitted: bool = False
 
 
 class OnboardingUpdate(BaseModel):
@@ -52,6 +53,7 @@ class UserResponse(BaseModel):
     path: str | None = None
     interests: list[str] = []
     prd_document: str | None = None
+    credits_form_submitted: bool = False
 
 
 class UserListResponse(BaseModel):

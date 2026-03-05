@@ -33,6 +33,12 @@ async def update_user_onboarding(uid: str, data: OnboardingUpdate) -> UserProfil
     return await _pg_update_user_onboarding(uid, data)
 
 
+async def mark_credits_submitted(uid: str) -> UserProfile:
+    if settings.db_backend == "firestore":
+        return await _fs_mark_credits_submitted(uid)
+    return await _pg_mark_credits_submitted(uid)
+
+
 # ── Firestore implementation ─────────────────────────────────────────────────
 
 
@@ -114,6 +120,16 @@ async def _fs_update_user_onboarding(uid: str, data: OnboardingUpdate) -> UserPr
     return UserProfile(**doc.to_dict())
 
 
+async def _fs_mark_credits_submitted(uid: str) -> UserProfile:
+    from app.db.firebase import get_firestore_client
+
+    db = await get_firestore_client()
+    doc_ref = db.collection(COLLECTION).document(uid)
+    await doc_ref.update({"credits_form_submitted": True})
+    doc = await doc_ref.get()
+    return UserProfile(**doc.to_dict())
+
+
 # ── PostgreSQL implementation ─────────────────────────────────────────────────
 
 
@@ -133,6 +149,7 @@ def _row_to_profile(row) -> UserProfile:
         path=row.path,
         interests=row.interests or [],
         prd_document=row.prd_document,
+        credits_form_submitted=row.credits_form_submitted or False,
     )
 
 
@@ -210,5 +227,21 @@ async def _pg_update_user_onboarding(uid: str, data: OnboardingUpdate) -> UserPr
         row.path = data.path
         row.interests = data.interests
         row.prd_document = data.prd_document
+        await session.commit()
+        return _row_to_profile(row)
+
+
+async def _pg_mark_credits_submitted(uid: str) -> UserProfile:
+    from sqlalchemy import select
+    from app.db.database import async_session, UserRow
+
+    async with async_session() as session:
+        result = await session.execute(
+            select(UserRow).where(UserRow.uid == uid)
+        )
+        row = result.scalar_one_or_none()
+        if not row:
+            raise ValueError(f"User {uid} not found")
+        row.credits_form_submitted = True
         await session.commit()
         return _row_to_profile(row)

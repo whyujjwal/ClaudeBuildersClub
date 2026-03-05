@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.auth.dependencies import get_current_user, get_current_user_profile, require_role
-from app.users.service import get_or_create_user, update_user_onboarding, list_all_users, update_user_role
+from app.users.service import get_or_create_user, update_user_onboarding, list_all_users, update_user_role, mark_credits_submitted
 from app.users.models import (
     UserProfile, UserResponse, UserListResponse,
     UpdateRoleRequest, OnboardingUpdate, Role,
@@ -28,6 +28,7 @@ async def get_user_profile(
         path=profile.path,
         interests=profile.interests,
         prd_document=profile.prd_document,
+        credits_form_submitted=profile.credits_form_submitted,
     )
 
 
@@ -51,6 +52,30 @@ async def complete_onboarding(
         path=user.path,
         interests=user.interests,
         prd_document=user.prd_document,
+        credits_form_submitted=user.credits_form_submitted,
+    )
+
+
+@router.post("/me/credits-submitted", response_model=UserResponse)
+async def submit_credits_form(
+    current_user: dict = Depends(get_current_user),
+):
+    """Mark the AI credits form as submitted."""
+    user = await mark_credits_submitted(current_user["sub"])
+    return UserResponse(
+        uid=user.uid,
+        email=user.email,
+        name=user.name,
+        picture=user.picture,
+        role=user.role,
+        created_at=user.created_at,
+        last_login=user.last_login,
+        onboarding_completed=user.onboarding_completed,
+        track=user.track,
+        path=user.path,
+        interests=user.interests,
+        prd_document=user.prd_document,
+        credits_form_submitted=user.credits_form_submitted,
     )
 
 
@@ -75,6 +100,7 @@ async def get_all_users(
                 path=u.path,
                 interests=u.interests,
                 prd_document=u.prd_document,
+                credits_form_submitted=u.credits_form_submitted,
             )
             for u in users
         ],
@@ -115,4 +141,5 @@ async def change_user_role(
         path=updated.path,
         interests=updated.interests,
         prd_document=updated.prd_document,
+        credits_form_submitted=updated.credits_form_submitted,
     )

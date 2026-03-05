@@ -35,6 +35,7 @@ export default async function DashboardPage() {
           path: null,
           interests: [],
           prd_document: null,
+          credits_form_submitted: false,
         }
       }
     />
