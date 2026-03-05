@@ -28,6 +28,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (account) {
         token.idToken = account.id_token
         token.accessToken = account.access_token
+        token.accessTokenExpires = account.expires_at  // Unix timestamp (seconds)
 
         // Fetch role from backend on sign-in
         try {
@@ -46,12 +47,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           console.error("Failed to fetch user role from backend:", error)
           token.role = "user"
         }
+        return token
       }
+
+      // On subsequent JWT checks, flag expired access tokens
+      if (
+        typeof token.accessTokenExpires === "number" &&
+        Date.now() / 1000 > token.accessTokenExpires
+      ) {
+        return { ...token, error: "AccessTokenExpired" as const }
+      }
+
       return token
     },
     async session({ session, token }) {
       session.idToken = token.idToken as string
       session.role = token.role as UserRole
+      if (token.error) session.error = token.error
       return session
     },
   },

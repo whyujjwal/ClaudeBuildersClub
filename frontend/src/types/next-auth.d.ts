@@ -7,6 +7,7 @@ declare module "next-auth" {
   interface Session {
     idToken?: string
     role?: UserRole
+    error?: string
   }
 }
 
@@ -14,6 +15,8 @@ declare module "next-auth/jwt" {
   interface JWT {
     idToken?: string
     accessToken?: string
+    accessTokenExpires?: number
     role?: UserRole
+    error?: string
   }
 }

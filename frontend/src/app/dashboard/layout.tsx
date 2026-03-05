@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { SessionGuard } from "@/components/session-guard";
 import { SignOutButton } from "@/components/sign-out-button";
 import { ROLE_LABELS, type UserRole } from "@/lib/roles";
 import Image from "next/image";
@@ -14,6 +15,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-brand-bg">
+      <SessionGuard />
       {/* Navigation */}
       <nav className="border-b border-brand-border bg-brand-surface px-6 py-4">
         <div className="mx-auto flex max-w-7xl items-center justify-between">

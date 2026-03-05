@@ -7,13 +7,19 @@ from app.config import settings
 from app.auth.router import router as auth_router
 from app.users.router import router as users_router
 from app.groups.router import router as groups_router
-from app.db.firebase import init_firebase, get_firestore_client
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_firebase()
-    await get_firestore_client()
+    if settings.db_backend == "firestore":
+        from app.db.firebase import init_firebase, get_firestore_client
+
+        init_firebase()
+        await get_firestore_client()
+    else:
+        from app.db.database import create_tables
+
+        await create_tables()
     yield
 
 
